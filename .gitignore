@@ -1,2 +1,4 @@
 env
 win
+.lambda_uploader_temp
+.vscode
