@@ -1,0 +1,16 @@
+{
+  "name": "ebay",
+  "description": "It does things",
+  "region": "us-east-1",
+  "runtime": "python2.7",
+  "handler": "function.lambda_handler",
+  "role": "arn:aws:iam::400113849727:role/lambda_basic_execution",
+  "requirements": ["ebaysdk"],
+  "ignore": [
+    "circle\\.yml$",
+    "\\.git$",
+    "/.*\\.pyc$"
+  ],
+  "timeout": 30,
+  "memory": 512
+}
