@@ -3,6 +3,7 @@ from ebaysdk.finding import Connection as finding
 from ebaysdk.exception import ConnectionError
 from flask import Flask
 from flask_ask import Ask, statement, session
+import boto3
 import logging
 app = Flask(__name__)
 ask = Ask(app, '/')
@@ -39,16 +40,19 @@ def account_is_linked():
 @ask.launch
 def launch():
     return get_value()
-
+def generate_speech(a):
+     speech = ""
+    for item in a['searchResult']['item']:
+        speech += "{} is going for ${} <break time=\"1s\"/> ".format(item['title'], item['sellingStatus']['currentPrice']['value'])
+    return statement(speech)
 @ask.intent("GetValueIntent")
 def get_value():
     if account_is_linked():
-            
         at = session.user.accessToken
         try:
             api = finding(config_file='ebay.yaml', warnings=True)
         #searchResult.item.sellerInfo
-        #  .sellerUserName
+        #  .sellerUserName     
             api_request = {
                 'itemFilter': [
                     {'name': 'Seller',
@@ -57,10 +61,7 @@ def get_value():
             }
         #https://www.bannedfromhalf.com/privacy.pdf
             response = api.execute('findItemsAdvanced', api_request)
-            speech = ""
-            for item in api.response.dict()['searchResult']['item']:
-                speech += "{} is going for ${} <break time=\"1s\"/> ".format(item['title'], item['sellingStatus']['currentPrice']['value'])
-            return statement(speech)
+           
             #dump(api, full=True)
         except ConnectionError as e:
             print(e)
