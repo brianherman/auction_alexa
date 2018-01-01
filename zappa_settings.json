@@ -10,6 +10,6 @@
         // app = Flask()
         // Bottle (your_module.py):
         // app = bottle.default_app()
-        "app_function": "app.app"
+        "lambda_handler": "app.lambda_handler",
     }
 }
